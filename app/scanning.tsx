@@ -1,0 +1,105 @@
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+  Easing
+} from 'react-native-reanimated';
+import { Scan } from 'lucide-react-native';
+
+export default function ScanningScreen() {
+  const router = useRouter();
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(0.5);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(1.2, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+    opacity.value = withRepeat(
+      withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+
+    const timeout = setTimeout(() => {
+      router.replace('/results');
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+      opacity: opacity.value,
+    };
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Animated.View style={[styles.iconContainer, animatedStyle]}>
+          <View style={styles.iconBackground}>
+            <Scan size={80} color="#0705F6" strokeWidth={2} />
+          </View>
+        </Animated.View>
+
+        <Text style={styles.title}>Identifying product...</Text>
+        <Text style={styles.subtitle}>Searching for the best discounts</Text>
+
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0705F6" />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  iconContainer: {
+    marginBottom: 40,
+  },
+  iconBackground: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: '#F8F9FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: '#E8E9FF',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#110792',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666666',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 32,
+  },
+  loadingContainer: {
+    marginTop: 20,
+  },
+});
