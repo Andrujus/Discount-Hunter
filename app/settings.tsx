@@ -4,14 +4,13 @@ import { ArrowLeft, Bell, Store, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 
 const storeChains = [
-  { id: '1', name: 'Target', selected: true },
-  { id: '2', name: 'Walmart', selected: true },
-  { id: '3', name: 'Best Buy', selected: true },
-  { id: '4', name: 'Amazon', selected: true },
-  { id: '5', name: 'Costco', selected: false },
-  { id: '6', name: 'Home Depot', selected: false },
-  { id: '7', name: 'CVS', selected: false },
-  { id: '8', name: 'Walgreens', selected: false },
+  { id: '1', name: 'Maxima', selected: true },
+  { id: '2', name: 'Rimi', selected: true },
+  { id: '3', name: 'Iki', selected: true },
+  { id: '4', name: 'Lidl', selected: true },
+  { id: '5', name: 'Assorti', selected: false },
+  { id: '6', name: 'Norfa', selected: false },
+  { id: '7', name: 'Aibė', selected: false },
 ];
 
 export default function SettingsScreen() {
