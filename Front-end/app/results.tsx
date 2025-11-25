@@ -10,6 +10,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ExternalLink, Tag } from 'lucide-react-native';
+import { palette, tones } from '../constants/colors';
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000';
 const POLL_INTERVAL_MS = 2000;
@@ -181,7 +182,7 @@ export default function ResultsScreen() {
           style={styles.backButton}
           onPress={() => router.push('/home')}
         >
-          <ArrowLeft size={24} color="#110792" />
+          <ArrowLeft size={24} color={palette.secondary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Results</Text>
         <View style={styles.placeholder} />
@@ -195,7 +196,7 @@ export default function ResultsScreen() {
         <View style={styles.productSection}>
           <View style={styles.productImageContainer}>
             <View style={styles.productImagePlaceholder}>
-              <Tag size={64} color="#B079C2" strokeWidth={1.5} />
+              <Tag size={64} color={palette.accentDark} strokeWidth={1.5} />
             </View>
           </View>
           <Text style={styles.productName}>{productName}</Text>
@@ -211,7 +212,7 @@ export default function ResultsScreen() {
 
           {isLoading && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#0705F6" />
+              <ActivityIndicator size="large" color={palette.primary} />
               <Text style={styles.loadingText}>Scraping local stores...</Text>
             </View>
           )}
@@ -285,7 +286,7 @@ export default function ResultsScreen() {
                       >
                         <ExternalLink
                           size={20}
-                          color={result.productUrl ? '#0705F6' : '#CCCCCC'}
+                          color={result.productUrl ? palette.primary : tones.subduedBorder}
                         />
                       </TouchableOpacity>
                     </View>
@@ -337,7 +338,7 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.background,
   },
   header: {
     flexDirection: 'row',
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   placeholder: {
     width: 40,
@@ -369,7 +370,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 32,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    borderBottomColor: tones.subduedBorder,
   },
   productImageContainer: {
     marginBottom: 20,
@@ -378,22 +379,22 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 20,
-    backgroundColor: '#FCF5FA',
+    backgroundColor: tones.softAccent,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#FCB4D4',
+    borderColor: palette.accent,
   },
   productName: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
     textAlign: 'center',
     marginBottom: 8,
   },
   productCategory: {
     fontSize: 16,
-    color: '#666666',
+    color: tones.mutedText,
   },
   resultsSection: {
     paddingHorizontal: 24,
@@ -403,40 +404,40 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#110792',
+    color: palette.secondary,
   },
   resultsList: {
     gap: 16,
   },
   resultCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.surface,
     borderRadius: 20,
     padding: 20,
     borderWidth: 2,
-    borderColor: '#F0F0F0',
-    shadowColor: '#000',
+    borderColor: tones.subduedBorder,
+    shadowColor: tones.accentShadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
   },
   resultCardBest: {
-    borderColor: '#0705F6',
+    borderColor: palette.primary,
     borderWidth: 3,
-    shadowColor: '#0705F6',
+    shadowColor: tones.primaryShadow,
     shadowOpacity: 0.15,
   },
   bestDealBadge: {
     position: 'absolute',
     top: -10,
     right: 20,
-    backgroundColor: '#0705F6',
+    backgroundColor: palette.primary,
     paddingHorizontal: 16,
     paddingVertical: 6,
     borderRadius: 12,
   },
   bestDealText: {
-    color: '#FFFFFF',
+    color: tones.inverseText,
     fontSize: 12,
     fontWeight: '700',
   },
@@ -449,7 +450,7 @@ const styles = StyleSheet.create({
   storeName: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   externalLink: {
     padding: 4,
@@ -468,32 +469,32 @@ const styles = StyleSheet.create({
   currentPrice: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   originalPrice: {
     fontSize: 18,
-    color: '#999999',
+    color: 'rgba(176, 121, 194, 0.8)',
     textDecorationLine: 'line-through',
   },
   discountBadge: {
-    backgroundColor: '#FCB4D4',
+    backgroundColor: palette.accent,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
   },
   discountText: {
-    color: '#110792',
+    color: palette.secondary,
     fontSize: 14,
     fontWeight: '700',
   },
   savingsRow: {
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#F0F0F0',
+    borderTopColor: tones.subduedBorder,
   },
   savingsText: {
     fontSize: 16,
-    color: '#0705F6',
+    color: palette.primary,
     fontWeight: '600',
   },
   bottomPadding: {
@@ -502,7 +503,7 @@ const styles = StyleSheet.create({
   timestamp: {
     marginTop: 12,
     fontSize: 12,
-    color: '#999999',
+    color: tones.mutedText,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -511,12 +512,12 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: '#666666',
+    color: tones.mutedText,
   },
   errorCard: {
-    backgroundColor: '#FFF3F3',
+    backgroundColor: 'rgba(252, 180, 212, 0.2)',
     borderWidth: 2,
-    borderColor: '#FFD1D1',
+    borderColor: palette.accent,
     borderRadius: 16,
     padding: 16,
     gap: 8,
@@ -524,39 +525,39 @@ const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#B00020',
+    color: palette.secondary,
   },
   errorMessage: {
     fontSize: 14,
-    color: '#B00020',
+    color: palette.accentDark,
   },
   retryButton: {
     marginTop: 8,
-    backgroundColor: '#B00020',
+    backgroundColor: palette.primary,
     paddingVertical: 10,
     borderRadius: 12,
   },
   retryButtonText: {
-    color: '#FFFFFF',
+    color: tones.inverseText,
     fontWeight: '600',
     textAlign: 'center',
   },
   emptyState: {
     borderWidth: 2,
-    borderColor: '#F0F0F0',
+    borderColor: tones.subduedBorder,
     borderRadius: 16,
     padding: 20,
-    backgroundColor: '#F8F9FF',
+    backgroundColor: tones.softAccent,
     gap: 8,
   },
   emptyTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#110792',
+    color: palette.secondary,
   },
   emptyMessage: {
     fontSize: 14,
-    color: '#666666',
+    color: tones.mutedText,
     lineHeight: 20,
   },
   externalLinkDisabled: {

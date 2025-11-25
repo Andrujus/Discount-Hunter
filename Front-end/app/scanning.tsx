@@ -9,6 +9,7 @@ import Animated, {
   Easing
 } from 'react-native-reanimated';
 import { Scan } from 'lucide-react-native';
+import { palette, tones } from '../constants/colors';
 
 export default function ScanningScreen() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function ScanningScreen() {
       <View style={styles.content}>
         <Animated.View style={[styles.iconContainer, animatedStyle]}>
           <View style={styles.iconBackground}>
-            <Scan size={80} color="#0705F6" strokeWidth={2} />
+            <Scan size={80} color={palette.primary} strokeWidth={2} />
           </View>
         </Animated.View>
 
@@ -59,7 +60,7 @@ export default function ScanningScreen() {
         <Text style={styles.subtitle}>Searching for the best discounts</Text>
 
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0705F6" />
+          <ActivityIndicator size="large" color={palette.primary} />
         </View>
       </View>
     </View>
@@ -69,7 +70,7 @@ export default function ScanningScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.background,
   },
   content: {
     flex: 1,
@@ -84,22 +85,22 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 80,
-    backgroundColor: '#F8F9FF',
+    backgroundColor: tones.softAccent,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderColor: '#E8E9FF',
+    borderColor: tones.subduedBorder,
   },
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
     marginBottom: 12,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666666',
+    color: tones.mutedText,
     textAlign: 'center',
     lineHeight: 24,
     marginBottom: 32,

@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ShoppingBag } from 'lucide-react-native';
+import { palette, tones } from '../constants/colors';
 
 export default function OnboardingScreen() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function OnboardingScreen() {
       <View style={styles.content}>
         <View style={styles.illustrationContainer}>
           <View style={styles.illustration}>
-            <ShoppingBag size={120} color="#0705F6" strokeWidth={1.5} />
+            <ShoppingBag size={120} color={palette.primary} strokeWidth={1.5} />
           </View>
         </View>
 
@@ -32,7 +33,7 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.background,
   },
   content: {
     flex: 1,
@@ -47,10 +48,10 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: '#F8F9FF',
+    backgroundColor: tones.softAccent,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#0705F6',
+    shadowColor: palette.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 12,
@@ -59,30 +60,30 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
     marginBottom: 16,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 18,
-    color: '#666666',
+    color: tones.mutedText,
     textAlign: 'center',
     lineHeight: 27,
     marginBottom: 48,
   },
   button: {
-    backgroundColor: '#0705F6',
+    backgroundColor: palette.primary,
     paddingVertical: 16,
     paddingHorizontal: 48,
     borderRadius: 28,
-    shadowColor: '#0705F6',
+    shadowColor: palette.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 6,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: tones.inverseText,
     fontSize: 18,
     fontWeight: '600',
   },
