@@ -9,11 +9,21 @@ Write-Host "Discount-Hunter - Full Stack Startup" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Get script directory
+# Get script directory and resolve project root (supports both repo layouts)
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$DiscountHunterRoot = Join-Path $ScriptDir "Discount-Hunter"
-$BackendDir = Join-Path $DiscountHunterRoot "Back-end"
-$FrontendDir = Join-Path $DiscountHunterRoot "Front-end"
+# Prefer `Discount-Hunter-app` folder if present, then `Discount-Hunter`, otherwise use script dir
+$possibleApp = Join-Path $ScriptDir "Discount-Hunter-app"
+$possibleRoot = Join-Path $ScriptDir "Discount-Hunter"
+if (Test-Path $possibleApp) {
+    $ProjectRoot = $possibleApp
+} elseif (Test-Path $possibleRoot) {
+    $ProjectRoot = $possibleRoot
+} else {
+    $ProjectRoot = $ScriptDir
+}
+
+$BackendDir = Join-Path $ProjectRoot "Back-end"
+$FrontendDir = Join-Path $ProjectRoot "Front-end"
 
 # Step 1: Kill existing processes
 Write-Host "[1/4] Stopping any running processes..." -ForegroundColor Yellow
@@ -24,21 +34,28 @@ Write-Host ""
 
 # Step 2: Start Backend
 Write-Host "[2/4] Starting Backend Server on http://127.0.0.1:3000" -ForegroundColor Yellow
-Push-Location $BackendDir
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "python server_foreground.py" -WindowStyle Minimized
-Pop-Location
-Start-Sleep -Seconds 3
-Write-Host "OK - Backend started" -ForegroundColor Green
+if (-not (Test-Path $BackendDir)) {
+    Write-Host "Backend directory not found: $BackendDir" -ForegroundColor Red
+} else {
+    # Build a command that activates venv if present and runs the foreground server
+    $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate') { . .\\.venv\\Scripts\\Activate } ; python server_foreground.py"
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir -WindowStyle Minimized
+    Start-Sleep -Seconds 4
+    Write-Host "OK - Backend started (separate window)" -ForegroundColor Green
+}
 Write-Host ""
 
 # Step 3: Start Frontend
 Write-Host "[3/4] Starting Frontend on http://localhost:8081" -ForegroundColor Yellow
-Push-Location $FrontendDir
-$env:EXPO_NO_TELEMETRY = '1'
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "npx expo start --web" -WindowStyle Minimized
-Pop-Location
-Start-Sleep -Seconds 2
-Write-Host "OK - Frontend started" -ForegroundColor Green
+if (-not (Test-Path $FrontendDir)) {
+    Write-Host "Frontend directory not found: $FrontendDir" -ForegroundColor Red
+} else {
+    # Launch a new PowerShell that sets the EXPO_NO_TELEMETRY env var and starts Expo in the project folder
+    $frontendCmd = "Set-Location -LiteralPath '$FrontendDir'; `$env:EXPO_NO_TELEMETRY = '1'; npx expo start --web"
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCmd -WorkingDirectory $FrontendDir -WindowStyle Minimized
+    Start-Sleep -Seconds 4
+    Write-Host "OK - Frontend started (separate window)" -ForegroundColor Green
+}
 Write-Host ""
 
 # Step 4: Verify services
