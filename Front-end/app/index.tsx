@@ -6,8 +6,29 @@ import { palette, tones } from '../constants/colors';
 export default function OnboardingScreen() {
   const router = useRouter();
 
+  const navItems: ReadonlyArray<{
+    label: string;
+    route: '/home' | '/results' | '/settings';
+  }> = [
+    { label: 'Home', route: '/home' },
+    { label: 'Results', route: '/results' },
+    { label: 'Settings', route: '/settings' },
+  ];
+
   return (
     <View style={styles.container}>
+      <View style={styles.navBar}>
+        {navItems.map(item => (
+          <TouchableOpacity
+            key={item.route}
+            style={styles.navItem}
+            onPress={() => router.push(item.route)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.navItemText}>{item.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
       <View style={styles.content}>
         <View style={styles.illustrationContainer}>
           <View style={styles.illustration}>
@@ -34,6 +55,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: tones.background,
+    paddingTop: 48,
+  },
+  navBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 24,
+    marginBottom: 16,
+    padding: 12,
+    borderRadius: 18,
+    backgroundColor: tones.surface,
+    borderWidth: 1,
+    borderColor: tones.subduedBorder,
+    shadowColor: tones.primaryShadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  navItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  navItemText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: palette.secondary,
   },
   content: {
     flex: 1,
