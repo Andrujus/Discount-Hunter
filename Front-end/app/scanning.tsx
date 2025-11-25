@@ -10,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Scan } from 'lucide-react-native';
 import { palette, tones } from '../constants/colors';
+import NavBar from '../components/NavBar';
 
 export default function ScanningScreen() {
   const router = useRouter();
@@ -49,6 +50,7 @@ export default function ScanningScreen() {
 
   return (
     <View style={styles.container}>
+      <NavBar style={styles.navBar} />
       <View style={styles.content}>
         <Animated.View style={[styles.iconContainer, animatedStyle]}>
           <View style={styles.iconBackground}>
@@ -71,6 +73,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: tones.background,
+  },
+  navBar: {
+    marginHorizontal: 24,
+    marginTop: 48,
+    marginBottom: 12,
   },
   content: {
     flex: 1,

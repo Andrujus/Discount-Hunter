@@ -5,6 +5,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from 'react';
 import { palette, tones } from '../constants/colors';
+import NavBar from '../components/NavBar';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -76,6 +77,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <NavBar style={styles.navBar} />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Discount Hunter</Text>
         <TouchableOpacity
@@ -122,6 +124,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: tones.background,
+  },
+  navBar: {
+    marginHorizontal: 24,
+    marginTop: 48,
+    marginBottom: 12,
   },
   header: {
     flexDirection: 'row',

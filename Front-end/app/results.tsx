@@ -11,6 +11,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ExternalLink, Tag } from 'lucide-react-native';
 import { palette, tones } from '../constants/colors';
+import NavBar from '../components/NavBar';
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8000';
 const POLL_INTERVAL_MS = 2000;
@@ -177,6 +178,7 @@ export default function ResultsScreen() {
 
   return (
     <View style={styles.container}>
+      <NavBar style={styles.navBar} />
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -339,6 +341,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: tones.background,
+  },
+  navBar: {
+    marginHorizontal: 24,
+    marginTop: 48,
+    marginBottom: 12,
   },
   header: {
     flexDirection: 'row',

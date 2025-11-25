@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { ArrowLeft, Bell, Store, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 import { palette, tones } from '../constants/colors';
+import NavBar from '../components/NavBar';
 
 const storeChains = [
   { id: '1', name: 'Maxima', link: "https://barbora.lt/", selected: true },
@@ -27,6 +28,7 @@ export default function SettingsScreen() {
 
   return (
     <View style={styles.container}>
+      <NavBar style={styles.navBar} />
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -116,6 +118,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: tones.background,
+  },
+  navBar: {
+    marginHorizontal: 24,
+    marginTop: 48,
+    marginBottom: 12,
   },
   header: {
     flexDirection: 'row',
