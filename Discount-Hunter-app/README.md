@@ -29,6 +29,73 @@ start_all.bat
 
 ---
 
+## 🟢 Launch Instructions
+
+### First time launching
+
+Follow these steps once to prepare your machine and the project:
+
+- Backend (one-time):
+
+```powershell
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter\Discount-Hunter-app\Back-end
+python -m venv .venv
+. .\.venv\Scripts\Activate
+pip install -r requirements.txt
+pip install python-multipart   # required for file uploads
+```
+
+- Frontend (one-time):
+
+```powershell
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter\Discount-Hunter-app\Front-end
+npm install
+```
+
+- Create a `.env` file for backend API keys (copy values from your provider):
+
+```text
+SCRAPINGBEE_API_KEY=your-scrapingbee-key
+OCR_SPACE_API_KEY=your-ocr-space-key
+```
+
+### Every other launching
+
+After the initial setup, use the launcher to start both services quickly.
+
+- From the repository root (PowerShell):
+
+```powershell
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter
+.\start_all.ps1
+```
+
+This opens two windows (backend and frontend). Keep them open to keep services running.
+
+- Or start components individually (if you prefer separate terminals):
+
+Backend (foreground):
+```powershell
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter\Discount-Hunter-app\Back-end
+. .\.venv\Scripts\Activate
+python server_foreground.py
+```
+
+Frontend (Expo web):
+```powershell
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter\Discount-Hunter-app\Front-end
+$env:EXPO_NO_TELEMETRY = '1'
+npx expo start --web
+```
+
+If PowerShell blocks running `start_all.ps1`, allow the script for this session and try again:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+.\start_all.ps1
+```
+
+
 ## 📋 Manual Startup
 
 ### Backend Setup (First Time Only)
