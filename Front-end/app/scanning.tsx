@@ -28,7 +28,12 @@ export default function ScanningScreen() {
     );
 
     const timeout = setTimeout(() => {
-      router.replace('/results');
+      router.replace({
+        pathname: '/results',
+        params: {
+          productName: 'Wireless Bluetooth Headphones',
+        },
+      });
     }, 3000);
 
     return () => clearTimeout(timeout);
