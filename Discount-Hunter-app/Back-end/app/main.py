@@ -3,6 +3,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from app import schemas
 from app.services.scraping import scrape_all_stores
@@ -12,6 +13,22 @@ from fastapi import File, UploadFile
 from app.schemas import OCRResponse
 
 app = FastAPI(title="Discount Hunter API")
+
+# Allow CORS from the frontend host(s)
+allowed_origins = [
+    "http://localhost:8081",
+    "http://localhost:19006",
+    "http://127.0.0.1:8081",
+    "http://127.0.0.1:19006",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/healthz", tags=["health"])
