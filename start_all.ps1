@@ -89,7 +89,7 @@ Write-Host "  Backend:  $(if ($backendHealthy) { 'OK' } else { 'Starting...' }) 
 Write-Host "  Frontend: $(if ($frontendHealthy) { 'OK' } else { 'Starting...' }) http://localhost:8081" -ForegroundColor $(if ($frontendHealthy) { 'Green' } else { 'Yellow' })
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Yellow
-Write-Host "  1. Open http://localhost:8081 in your browser"
+Write-Host "  1. Wait for Expo to open your browser automatically"
 Write-Host "  2. Click 'Get Started' to begin scanning products"
 Write-Host "  3. Minimize the backend/frontend windows to keep them running"
 Write-Host ""

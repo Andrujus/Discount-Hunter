@@ -40,6 +40,8 @@ echo - Backend:  http://127.0.0.1:3000
 echo - Frontend: http://localhost:8081
 echo ========================================
 echo.
+echo Expo will open your browser automatically
+echo.
 echo Backend window: Minimize to keep running
 echo Frontend window: Minimize to keep running
 echo.
