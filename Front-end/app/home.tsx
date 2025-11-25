@@ -4,6 +4,7 @@ import { Camera, Image as ImageIcon, Settings } from 'lucide-react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from 'react';
+import { palette, tones } from '../constants/colors';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -81,7 +82,7 @@ export default function HomeScreen() {
           style={styles.settingsButton}
           onPress={() => router.push('/settings')}
         >
-          <Settings size={24} color="#110792" />
+          <Settings size={24} color={palette.secondary} />
         </TouchableOpacity>
       </View>
 
@@ -98,7 +99,7 @@ export default function HomeScreen() {
             activeOpacity={0.8}
           >
             <View style={styles.cameraIconContainer}>
-              <Camera size={48} color="#FFFFFF" strokeWidth={2} />
+              <Camera size={48} color={tones.inverseText} strokeWidth={2} />
             </View>
             <Text style={styles.primaryButtonText}>Take Photo</Text>
           </TouchableOpacity>
@@ -108,7 +109,7 @@ export default function HomeScreen() {
             onPress={handleUploadFromGallery}
             activeOpacity={0.8}
           >
-            <ImageIcon size={24} color="#0705F6" strokeWidth={2} />
+            <ImageIcon size={24} color={palette.primary} strokeWidth={2} />
             <Text style={styles.secondaryButtonText}>Upload from Gallery</Text>
           </TouchableOpacity>
         </View>
@@ -120,7 +121,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.background,
   },
   header: {
     flexDirection: 'row',
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   settingsButton: {
     padding: 8,
@@ -149,23 +150,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 18,
-    color: '#666666',
+    color: tones.mutedText,
     lineHeight: 27,
   },
   actionSection: {
     gap: 20,
   },
   primaryButton: {
-    backgroundColor: '#0705F6',
+    backgroundColor: palette.primary,
     borderRadius: 24,
     padding: 32,
     alignItems: 'center',
-    shadowColor: '#0705F6',
+    shadowColor: palette.primary,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
     shadowRadius: 16,
@@ -175,18 +176,18 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(252, 180, 212, 0.25)',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
   },
   primaryButtonText: {
-    color: '#FFFFFF',
+    color: tones.inverseText,
     fontSize: 20,
     fontWeight: '600',
   },
   secondaryButton: {
-    backgroundColor: '#F8F9FF',
+    backgroundColor: tones.softAccent,
     borderRadius: 20,
     padding: 24,
     flexDirection: 'row',
@@ -194,10 +195,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 12,
     borderWidth: 2,
-    borderColor: '#E8E9FF',
+    borderColor: tones.subduedBorder,
   },
   secondaryButtonText: {
-    color: '#0705F6',
+    color: palette.primary,
     fontSize: 18,
     fontWeight: '600',
   },
@@ -241,12 +242,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 4,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderColor: 'rgba(252, 180, 212, 0.45)',
   },
   captureButtonInner: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#0705F6',
+    backgroundColor: palette.primary,
   },
 });

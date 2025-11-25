@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 're
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Bell, Store, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
+import { palette, tones } from '../constants/colors';
 
 const storeChains = [
   { id: '1', name: 'Maxima', link: "https://barbora.lt/", selected: true },
@@ -31,7 +32,7 @@ export default function SettingsScreen() {
           style={styles.backButton}
           onPress={() => router.push('/home')}
         >
-          <ArrowLeft size={24} color="#110792" />
+          <ArrowLeft size={24} color={palette.secondary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Settings</Text>
         <View style={styles.placeholder} />
@@ -40,7 +41,7 @@ export default function SettingsScreen() {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Bell size={24} color="#110792" />
+            <Bell size={24} color={palette.secondary} />
             <Text style={styles.sectionTitle}>Notifications</Text>
           </View>
 
@@ -55,8 +56,8 @@ export default function SettingsScreen() {
               <Switch
                 value={notificationsEnabled}
                 onValueChange={setNotificationsEnabled}
-                trackColor={{ false: '#E0E0E0', true: '#B079C2' }}
-                thumbColor={notificationsEnabled ? '#0705F6' : '#f4f3f4'}
+                trackColor={{ false: tones.subduedBorder, true: palette.accentDark }}
+                thumbColor={notificationsEnabled ? palette.primary : tones.surface}
               />
             </View>
           </View>
@@ -64,7 +65,7 @@ export default function SettingsScreen() {
 
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Store size={24} color="#110792" />
+            <Store size={24} color={palette.secondary} />
             <Text style={styles.sectionTitle}>Preferred Stores</Text>
           </View>
           <Text style={styles.sectionSubtitle}>
@@ -98,7 +99,7 @@ export default function SettingsScreen() {
                 </View>
                 <ChevronRight
                   size={20}
-                  color={store.selected ? '#0705F6' : '#CCCCCC'}
+                  color={store.selected ? palette.primary : tones.subduedBorder}
                 />
               </TouchableOpacity>
             ))}
@@ -114,7 +115,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.background,
   },
   header: {
     flexDirection: 'row',
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   placeholder: {
     width: 40,
@@ -152,21 +153,21 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#110792',
+    color: palette.secondary,
   },
   sectionSubtitle: {
     fontSize: 14,
-    color: '#666666',
+    color: tones.mutedText,
     marginBottom: 16,
     marginLeft: 36,
   },
   settingCard: {
-    backgroundColor: '#F8F9FF',
+    backgroundColor: tones.softAccent,
     borderRadius: 20,
     padding: 20,
     marginTop: 8,
     borderWidth: 2,
-    borderColor: '#E8E9FF',
+    borderColor: tones.subduedBorder,
   },
   settingRow: {
     flexDirection: 'row',
@@ -180,30 +181,30 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#110792',
+    color: palette.secondary,
     marginBottom: 6,
   },
   settingDescription: {
     fontSize: 14,
-    color: '#666666',
+    color: tones.mutedText,
     lineHeight: 20,
   },
   storesList: {
     gap: 12,
   },
   storeCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: tones.surface,
     borderRadius: 16,
     padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#F0F0F0',
+    borderColor: tones.subduedBorder,
   },
   storeCardSelected: {
-    backgroundColor: '#F8F9FF',
-    borderColor: '#0705F6',
+    backgroundColor: tones.softAccent,
+    borderColor: palette.primary,
   },
   storeInfo: {
     flexDirection: 'row',
@@ -215,13 +216,13 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#CCCCCC',
+    borderColor: tones.subduedBorder,
     justifyContent: 'center',
     alignItems: 'center',
   },
   storeCheckboxSelected: {
-    backgroundColor: '#0705F6',
-    borderColor: '#0705F6',
+    backgroundColor: palette.primary,
+    borderColor: palette.primary,
   },
   checkmark: {
     color: '#FFFFFF',
@@ -231,10 +232,10 @@ const styles = StyleSheet.create({
   storeName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666666',
+    color: tones.mutedText,
   },
   storeNameSelected: {
-    color: '#110792',
+    color: palette.secondary,
   },
   bottomPadding: {
     height: 40,
