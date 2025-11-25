@@ -1,4 +1,5 @@
 Discount-Hunter
 
 preview: 
-$env:EXPO_NO_TELEMETRY = '1'; npx expo start --web  
+cd Front-end
+$env:EXPO_NO_TELEMETRY = '1'; npx expo start --web

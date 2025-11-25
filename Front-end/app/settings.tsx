@@ -4,13 +4,13 @@ import { ArrowLeft, Bell, Store, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 
 const storeChains = [
-  { id: '1', name: 'Maxima', selected: true },
-  { id: '2', name: 'Rimi', selected: true },
-  { id: '3', name: 'Iki', selected: true },
-  { id: '4', name: 'Lidl', selected: true },
-  { id: '5', name: 'Assorti', selected: false },
-  { id: '6', name: 'Norfa', selected: false },
-  { id: '7', name: 'Aibė', selected: false },
+  { id: '1', name: 'Maxima', link: "https://barbora.lt/", selected: true },
+  { id: '2', name: 'Rimi', link:"https://www.rimi.lt/e-parduotuve", selected: true },
+  { id: '3', name: 'Iki', link:"https://www.lastmile.lt/chain/IKI", selected: true },
+  { id: '4', name: 'Lidl', link:"https://www.lidl.lt/c", selected: true },
+  { id: '5', name: 'Assorti', link:"https://www.assorti.lt/", selected: false },
+  { id: '6', name: 'Norfa', link:"https://www.norfa.lt/", selected: false },
+  { id: '7', name: 'Aibė', link:"Front-end/assets/images/prices/Aibė. Leidinys Nr. 22 (2025.11.13 - 2025.11.25).pdf", selected: false },
 ];
 
 export default function SettingsScreen() {
