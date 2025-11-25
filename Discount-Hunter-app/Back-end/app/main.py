@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app import schemas
 from app.services.scraping import scrape_all_stores
+from app.services.price_utils import sanitize_prices, add_price_statistics
 from app.state import job_store
 from app.services.ocr import ocr_from_file
 from fastapi import File, UploadFile
@@ -71,11 +72,19 @@ async def _run_scrape_job(job_id: str, query: str) -> None:
     await job_store.update_job(job_id, status="running")
     try:
         results = await scrape_all_stores(query)
+        # Filter out results with very low confidence (likely irrelevant)
+        filtered = [r for r in results if r.get('confidence', 0) >= 0.15 or r.get('price') is None]  # Lowered from 0.3 to 0.15
+        # Sanitize prices to remove outliers and invalid data
+        sanitized = sanitize_prices(filtered)
+        # Add statistics
+        stats = add_price_statistics(sanitized)
+        # Sort by confidence (highest first) then price (lowest first)
+        sanitized.sort(key=lambda x: (-(x.get('confidence') or 0), x.get('price') or float('inf')))
     except Exception as exc:
         await job_store.update_job(job_id, status="failed", error=str(exc))
         return
 
-    await job_store.update_job(job_id, status="completed", data=results)
+    await job_store.update_job(job_id, status="completed", data=sanitized)
 
 
 @app.post("/api/ocr", response_model=OCRResponse, tags=["ocr"])
@@ -85,8 +94,13 @@ async def upload_and_ocr(file: UploadFile = File(...)) -> OCRResponse:
     Falls back to a mocked product name when no OCR provider key is configured.
     """
     try:
+        print(f"[OCR] Received file: {file.filename}, content_type: {file.content_type}")
         product_name = await ocr_from_file(file)
+        print(f"[OCR] Successfully extracted: {product_name}")
     except Exception as exc:
+        print(f"[OCR] ERROR: {type(exc).__name__}: {str(exc)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(exc))
 
     return OCRResponse(productName=product_name)

@@ -18,6 +18,7 @@ class StoreResult(BaseModel):
     store: str
     price: Optional[float] = Field(default=None, description="Current price, if parsed")
     currency: Optional[str] = Field(default="€")
+    confidence: Optional[float] = Field(default=0.0, description="Price extraction confidence (0-1)")
     originalPrice: Optional[float] = Field(default=None)
     discountPercent: Optional[float] = Field(default=None)
     productUrl: Optional[str] = Field(default=None)

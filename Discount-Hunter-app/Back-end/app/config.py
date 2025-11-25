@@ -20,15 +20,15 @@ class Settings(BaseSettings):
         default_factory=lambda: [
             {
                 "name": "Maxima",
-                "search_url": "https://www.rimi.lt/eparduotuve/search?query={query}",
+                "search_url": "https://www.barbora.lt/paieska?q={query}",
             },
             {
                 "name": "Rimi",
-                "search_url": "https://www.barbora.lt/paieska?search={query}",
+                "search_url": "https://www.rimi.lt/e-parduotuve/lt/paieska?query={query}",
             },
             {
                 "name": "Lidl",
-                "search_url": "https://www.google.com/search?q={query}+site:lidl.lt",
+                "search_url": "https://www.lidl.lt/c/search?q={query}",
             },
         ],
         description="List of store descriptors the scraper should target",
