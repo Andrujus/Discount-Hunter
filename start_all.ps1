@@ -39,7 +39,7 @@ if (-not (Test-Path $BackendDir)) {
 } else {
     # Build a command that activates venv if present and runs the foreground server
     $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate.ps1') { . .\\.venv\\Scripts\\Activate.ps1 } else { Write-Host 'Virtual environment not found - run: python -m venv .venv' -ForegroundColor Red; Read-Host 'Press Enter to close' }; python server_foreground.py"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir
+    $backendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir -PassThru
     Start-Sleep -Seconds 5
     Write-Host "OK - Backend started (separate window)" -ForegroundColor Green
 }
@@ -51,8 +51,8 @@ if (-not (Test-Path $FrontendDir)) {
     Write-Host "Frontend directory not found: $FrontendDir" -ForegroundColor Red
 } else {
     # Launch a new PowerShell that sets the EXPO_NO_TELEMETRY env var and starts Expo in the project folder
-    $frontendCmd = "Set-Location -LiteralPath '$FrontendDir'; `$env:EXPO_NO_TELEMETRY = '1'; Write-Host 'Starting Expo bundler...' -ForegroundColor Cyan; npx expo start --web"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCmd -WorkingDirectory $FrontendDir
+    $frontendCmd = "Set-Location -LiteralPath '$FrontendDir'; `$env:EXPO_NO_TELEMETRY = '1'; Write-Host 'Starting Expo bundler...' -ForegroundColor Cyan; npx expo start"
+    $frontendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCmd -WorkingDirectory $FrontendDir -PassThru
     Start-Sleep -Seconds 8
     Write-Host "OK - Frontend started (separate window)" -ForegroundColor Green
 }
@@ -99,3 +99,14 @@ Write-Host "Waiting for services to fully start..." -ForegroundColor Cyan
 Start-Sleep -Seconds 15
 Write-Host "Opening browser..." -ForegroundColor Cyan
 Start-Process "http://localhost:8081"
+
+# Close the backend and frontend terminal windows after browser opens
+Start-Sleep -Seconds 2
+Write-Host "Minimizing service windows..." -ForegroundColor Cyan
+if ($backendProcess) {
+    Stop-Process -Id $backendProcess.Id -ErrorAction SilentlyContinue
+}
+if ($frontendProcess) {
+    Stop-Process -Id $frontendProcess.Id -ErrorAction SilentlyContinue
+}
+Write-Host "Service windows closed. Services are still running in background." -ForegroundColor Green
