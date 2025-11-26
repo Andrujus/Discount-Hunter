@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Bell, Store, ChevronRight } from 'lucide-react-native';
+import { Bell, Store, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 import { palette, tones } from '../constants/colors';
+import BottomNav from '../components/BottomNav';
 
 const storeChains = [
   { id: '1', name: 'Maxima', link: "https://barbora.lt/", selected: true },
@@ -27,18 +28,7 @@ export default function SettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.push('/home')}
-        >
-          <ArrowLeft size={24} color={palette.secondary} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Settings</Text>
-        <View style={styles.placeholder} />
-      </View>
-
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Bell size={24} color={palette.secondary} />
@@ -106,8 +96,9 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        <View style={styles.bottomPadding} />
       </ScrollView>
+
+      <BottomNav />
     </View>
   );
 }
@@ -117,27 +108,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tones.background,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: palette.secondary,
-  },
-  placeholder: {
-    width: 40,
-  },
   scrollView: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingTop: 60,
+    paddingBottom: 20,
   },
   section: {
     paddingHorizontal: 24,
@@ -236,8 +212,5 @@ const styles = StyleSheet.create({
   },
   storeNameSelected: {
     color: palette.secondary,
-  },
-  bottomPadding: {
-    height: 40,
   },
 });

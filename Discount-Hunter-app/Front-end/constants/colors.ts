@@ -14,6 +14,10 @@ export const tones = {
   accentShadow: 'rgba(176, 121, 194, 0.35)',
   mutedText: palette.accentDark,
   inverseText: '#FFFFFF',
+  neutral50: '#F8F9FF',
+  neutral200: '#E8E9FF',
+  neutral400: '#CCCCCC',
+  neutral600: '#666666',
 } as const;
 
 export type PaletteColor = keyof typeof palette;

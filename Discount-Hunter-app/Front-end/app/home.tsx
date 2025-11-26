@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Camera, Image as ImageIcon, Settings, LogOut } from 'lucide-react-native';
+import { Camera, Image as ImageIcon } from 'lucide-react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from 'react';
 import { palette, tones } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
+import BottomNav from '../components/BottomNav';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -92,31 +93,12 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.headerTitle}>Discount Hunter</Text>
-          {user && <Text style={styles.userName}>Hi, {user.firstName}</Text>}
-        </View>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={styles.settingsButton}
-            onPress={() => router.push('/settings')}
-          >
-            <Settings size={24} color={palette.secondary} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={handleLogout}
-          >
-            <LogOut size={24} color="#e74c3c" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
       <View style={styles.content}>
-        <View style={styles.heroSection}>
-          <Text style={styles.title}>Find the Best Deals</Text>
-          <Text style={styles.subtitle}>Snap a product to find discounts</Text>
+        <View style={styles.topSection}>
+          <View style={styles.welcomeSection}>
+            <Text style={styles.title}>Find the Best Deals</Text>
+            {user && <Text style={styles.userName}>Hi, {user.firstName}!</Text>}
+          </View>
         </View>
 
         <View style={styles.actionSection}>
@@ -141,6 +123,8 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </View>
+
+      <BottomNav onLogout={handleLogout} />
     </View>
   );
 }
@@ -150,53 +134,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tones.background,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: palette.secondary,
-  },
-  userName: {
-    fontSize: 14,
-    color: tones.mutedText,
-    marginTop: 4,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    gap: 12,
-    alignItems: 'center',
-  },
-  settingsButton: {
-    padding: 8,
-  },
-  logoutButton: {
-    padding: 8,
-  },
   content: {
     flex: 1,
     paddingHorizontal: 24,
   },
-  heroSection: {
-    marginTop: 40,
-    marginBottom: 60,
+  topSection: {
+    paddingTop: 60,
+    paddingBottom: 20,
+  },
+  welcomeSection: {
+    marginBottom: 40,
   },
   title: {
     fontSize: 36,
     fontWeight: '700',
     color: palette.secondary,
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 18,
+  userName: {
+    fontSize: 16,
     color: tones.mutedText,
-    lineHeight: 27,
+    fontWeight: '500',
   },
   actionSection: {
     gap: 20,

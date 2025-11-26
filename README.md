@@ -4,7 +4,7 @@ Discount-Hunter
 ## Front-end preview
 
 ```
-cd Discount-Hunter\Front-end
+cd Discount-Hunter-app\Front-end
 $env:EXPO_NO_TELEMETRY = '1'
 npx expo start --web
 ```

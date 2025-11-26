@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ExternalLink, Tag } from 'lucide-react-native';
+import { ExternalLink, Tag } from 'lucide-react-native';
 import { palette, tones } from '../constants/colors';
+import BottomNav from '../components/BottomNav';
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000';
 const POLL_INTERVAL_MS = 2000;
@@ -177,17 +178,6 @@ export default function ResultsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.push('/home')}
-        >
-          <ArrowLeft size={24} color={palette.secondary} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Results</Text>
-        <View style={styles.placeholder} />
-      </View>
-
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
@@ -328,9 +318,9 @@ export default function ResultsScreen() {
             </View>
           )}
         </View>
-
-        <View style={styles.bottomPadding} />
       </ScrollView>
+
+      <BottomNav />
     </View>
   );
 }
@@ -340,30 +330,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tones.background,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: palette.secondary,
-  },
-  placeholder: {
-    width: 40,
-  },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 40,
+    paddingTop: 60,
+    paddingBottom: 20,
   },
   productSection: {
     alignItems: 'center',
@@ -496,9 +468,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: palette.primary,
     fontWeight: '600',
-  },
-  bottomPadding: {
-    height: 40,
   },
   timestamp: {
     marginTop: 12,

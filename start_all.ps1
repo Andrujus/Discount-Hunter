@@ -38,9 +38,9 @@ if (-not (Test-Path $BackendDir)) {
     Write-Host "Backend directory not found: $BackendDir" -ForegroundColor Red
 } else {
     # Build a command that activates venv if present and runs the foreground server
-    $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate') { . .\\.venv\\Scripts\\Activate } ; python server_foreground.py"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir -WindowStyle Minimized
-    Start-Sleep -Seconds 4
+    $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate.ps1') { . .\\.venv\\Scripts\\Activate.ps1 } else { Write-Host 'Virtual environment not found - run: python -m venv .venv' -ForegroundColor Red; Read-Host 'Press Enter to close' }; python server_foreground.py"
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir
+    Start-Sleep -Seconds 5
     Write-Host "OK - Backend started (separate window)" -ForegroundColor Green
 }
 Write-Host ""
@@ -51,9 +51,9 @@ if (-not (Test-Path $FrontendDir)) {
     Write-Host "Frontend directory not found: $FrontendDir" -ForegroundColor Red
 } else {
     # Launch a new PowerShell that sets the EXPO_NO_TELEMETRY env var and starts Expo in the project folder
-    $frontendCmd = "Set-Location -LiteralPath '$FrontendDir'; `$env:EXPO_NO_TELEMETRY = '1'; npx expo start --web"
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCmd -WorkingDirectory $FrontendDir -WindowStyle Minimized
-    Start-Sleep -Seconds 4
+    $frontendCmd = "Set-Location -LiteralPath '$FrontendDir'; `$env:EXPO_NO_TELEMETRY = '1'; Write-Host 'Starting Expo bundler...' -ForegroundColor Cyan; npx expo start --web"
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendCmd -WorkingDirectory $FrontendDir
+    Start-Sleep -Seconds 8
     Write-Host "OK - Frontend started (separate window)" -ForegroundColor Green
 }
 Write-Host ""
@@ -89,7 +89,13 @@ Write-Host "  Backend:  $(if ($backendHealthy) { 'OK' } else { 'Starting...' }) 
 Write-Host "  Frontend: $(if ($frontendHealthy) { 'OK' } else { 'Starting...' }) http://localhost:8081" -ForegroundColor $(if ($frontendHealthy) { 'Green' } else { 'Yellow' })
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Yellow
-Write-Host "  1. Wait for Expo to open your browser automatically"
-Write-Host "  2. Click 'Get Started' to begin scanning products"
-Write-Host "  3. Minimize the backend/frontend windows to keep them running"
+Write-Host "  1. Check the backend/frontend windows for any errors"
+Write-Host "  2. Browser will open automatically in ~15 seconds"
+Write-Host "  3. If browser doesn't open, manually go to: http://localhost:8081"
+Write-Host "  4. Keep the backend/frontend windows open while using the app"
 Write-Host ""
+
+Write-Host "Waiting for services to fully start..." -ForegroundColor Cyan
+Start-Sleep -Seconds 15
+Write-Host "Opening browser..." -ForegroundColor Cyan
+Start-Process "http://localhost:8081"
