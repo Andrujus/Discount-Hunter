@@ -54,14 +54,9 @@ pip install -r requirements.txt
 - Frontend (one-time):
 
 ```powershell
-cd Discount-Hunter-app/Front-end
+cd C:\Users\justa\Documents\GitHub\Discount-Hunter\Discount-Hunter-app\Front-end
 npm install
 ```
-
-> **Important:** After running `npm install`, you may need to install Expo separately if it's not already installed:
-> ```powershell
-> npm install expo
-> ```
 
 - Create a `.env` file for backend API keys (copy values from your provider):
 
