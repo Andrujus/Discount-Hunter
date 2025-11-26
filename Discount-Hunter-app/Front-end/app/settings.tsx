@@ -17,6 +17,10 @@ const storeChains = [
 
 export default function SettingsScreen() {
   const router = useRouter();
+
+  const handleTakePhoto = () => {
+    router.push('/scanning');
+  };
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [stores, setStores] = useState(storeChains);
 
@@ -98,7 +102,7 @@ export default function SettingsScreen() {
 
       </ScrollView>
 
-      <BottomNav />
+      <BottomNav onTakePhoto={handleTakePhoto} />
     </View>
   );
 }

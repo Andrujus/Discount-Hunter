@@ -161,29 +161,11 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.actionSection}>
-          <TouchableOpacity
-            style={styles.primaryButton}
-            onPress={handleTakePhoto}
-            activeOpacity={0.8}
-          >
-            <View style={styles.cameraIconContainer}>
-              <Camera size={48} color={tones.inverseText} strokeWidth={2} />
-            </View>
-            <Text style={styles.primaryButtonText}>Take Photo</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.secondaryButton}
-            onPress={handleUploadFromGallery}
-            activeOpacity={0.8}
-          >
-            <ImageIcon size={24} color={palette.primary} strokeWidth={2} />
-            <Text style={styles.secondaryButtonText}>Upload from Gallery</Text>
-          </TouchableOpacity>
+          {/* Take Photo button moved to footer - content will be added here later */}
         </View>
       </View>
 
-      <BottomNav onLogout={handleLogout} />
+      <BottomNav onTakePhoto={handleTakePhoto} />
     </View>
   );
 }
@@ -294,47 +276,7 @@ const styles = StyleSheet.create({
   },
   actionSection: {
     gap: 20,
-  },
-  primaryButton: {
-    backgroundColor: palette.primary,
-    borderRadius: 24,
-    padding: 32,
-    alignItems: 'center',
-    shadowColor: palette.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  cameraIconContainer: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: 'rgba(252, 180, 212, 0.25)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  primaryButtonText: {
-    color: tones.inverseText,
-    fontSize: 20,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    backgroundColor: tones.softAccent,
-    borderRadius: 20,
-    padding: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    borderWidth: 2,
-    borderColor: tones.subduedBorder,
-  },
-  secondaryButtonText: {
-    color: palette.primary,
-    fontSize: 18,
-    fontWeight: '600',
+    minHeight: 200,
   },
   cameraContainer: {
     flex: 1,
