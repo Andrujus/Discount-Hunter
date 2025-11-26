@@ -1,7 +1,28 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel, Field, constr, EmailStr, field_validator
+
+
+# Auth Schemas
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    first_name: str = Field(..., min_length=1, max_length=100)
+    last_name: str = Field(..., min_length=1, max_length=100)
+    password: str = Field(..., min_length=6, max_length=100)
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class AuthResponse(BaseModel):
+    userId: int
+    email: str
+    firstName: str
+    lastName: str
+    token: str
 
 
 class ScrapeRequest(BaseModel):

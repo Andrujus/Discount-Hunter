@@ -1,16 +1,32 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Camera, Image as ImageIcon, Settings } from 'lucide-react-native';
+import { Camera, Image as ImageIcon, Settings, LogOut } from 'lucide-react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef } from 'react';
 import { palette, tones } from '../constants/colors';
+import { useAuth } from '../context/AuthContext';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { logout, user } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+
+  const handleLogout = async () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: async () => {
+          await logout();
+          router.replace('/auth');
+        },
+      },
+    ]);
+  };
 
   const handleTakePhoto = async () => {
     if (!permission) {
@@ -77,13 +93,24 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Discount Hunter</Text>
-        <TouchableOpacity
-          style={styles.settingsButton}
-          onPress={() => router.push('/settings')}
-        >
-          <Settings size={24} color={palette.secondary} />
-        </TouchableOpacity>
+        <View>
+          <Text style={styles.headerTitle}>Discount Hunter</Text>
+          {user && <Text style={styles.userName}>Hi, {user.firstName}</Text>}
+        </View>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.settingsButton}
+            onPress={() => router.push('/settings')}
+          >
+            <Settings size={24} color={palette.secondary} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={handleLogout}
+          >
+            <LogOut size={24} color="#e74c3c" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.content}>
@@ -136,7 +163,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: palette.secondary,
   },
+  userName: {
+    fontSize: 14,
+    color: tones.mutedText,
+    marginTop: 4,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
+  },
   settingsButton: {
+    padding: 8,
+  },
+  logoutButton: {
     padding: 8,
   },
   content: {

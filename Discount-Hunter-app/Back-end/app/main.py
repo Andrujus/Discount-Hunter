@@ -2,7 +2,7 @@ import asyncio
 from datetime import datetime
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import schemas
@@ -10,6 +10,7 @@ from app.services.scraping import scrape_all_stores
 from app.services.price_utils import sanitize_prices, add_price_statistics
 from app.state import job_store
 from app.services.ocr import ocr_from_file
+from app.services.auth import register_user, login_user, get_user_by_token
 from fastapi import File, UploadFile
 from app.schemas import OCRResponse
 
@@ -36,6 +37,48 @@ app.add_middleware(
 async def health_check() -> dict[str, str]:
     return {"status": "ok", "timestamp": datetime.utcnow().isoformat()}
 
+
+# ============================================================================
+# AUTH ENDPOINTS
+# ============================================================================
+
+@app.post("/api/auth/register", response_model=schemas.AuthResponse, tags=["auth"])
+async def register(request: schemas.RegisterRequest) -> schemas.AuthResponse:
+    """Register a new user."""
+    try:
+        user_data = register_user(
+            email=request.email,
+            first_name=request.first_name,
+            last_name=request.last_name,
+            password=request.password,
+        )
+        return schemas.AuthResponse(**user_data)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/api/auth/login", response_model=schemas.AuthResponse, tags=["auth"])
+async def login(request: schemas.LoginRequest) -> schemas.AuthResponse:
+    """Login a user."""
+    try:
+        user_data = login_user(email=request.email, password=request.password)
+        return schemas.AuthResponse(**user_data)
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
+
+
+@app.get("/api/auth/me", response_model=dict, tags=["auth"])
+async def get_current_user(token: str = Query(...)) -> dict:
+    """Get current user from token."""
+    user = get_user_by_token(token)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    return user
+
+
+# ============================================================================
+# SCRAPING ENDPOINTS
+# ============================================================================
 
 @app.post(
     "/api/scrape",
