@@ -37,10 +37,10 @@ Write-Host "[2/4] Starting Backend Server on http://127.0.0.1:3000" -ForegroundC
 if (-not (Test-Path $BackendDir)) {
     Write-Host "Backend directory not found: $BackendDir" -ForegroundColor Red
 } else {
-    # Build a command that activates venv if present and runs the foreground server
-    $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate.ps1') { . .\\.venv\\Scripts\\Activate.ps1 } else { Write-Host 'Virtual environment not found - run: python -m venv .venv' -ForegroundColor Red; Read-Host 'Press Enter to close' }; python server_foreground.py"
+    # Use the stdlib HTTP server for Windows compatibility
+    $backendCmd = "Set-Location -LiteralPath '$BackendDir'; if (Test-Path '.venv\\Scripts\\Activate.ps1') { . .\\.venv\\Scripts\\Activate.ps1 } else { Write-Host 'Virtual environment not found - run: python -m venv .venv' -ForegroundColor Red; Read-Host 'Press Enter to close' }; python run_stdlib_server.py"
     $backendProcess = Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendCmd -WorkingDirectory $BackendDir -PassThru
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 3
     Write-Host "OK - Backend started (separate window)" -ForegroundColor Green
 }
 Write-Host ""
