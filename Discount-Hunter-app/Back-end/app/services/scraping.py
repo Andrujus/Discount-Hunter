@@ -7,6 +7,8 @@ import httpx
 from bs4 import BeautifulSoup
 
 from app.config import get_settings
+from app.scrapers import search_all
+from app.normalization import normalize_results
 
 
 # Multiple price patterns for better matching across different store formats
@@ -260,30 +262,26 @@ def extract_price(html: str) -> Tuple[Optional[float], float]:
 
 async def scrape_all_stores(query: str) -> list[dict[str, Any]]:
     """Scrape every configured store concurrently."""
-    settings = get_settings()
-    async with httpx.AsyncClient(follow_redirects=True) as client:
-        tasks = [
-            fetch_store_snapshot(client, store=store, query=query)
-            for store in settings.stores
-        ]
-        results = await asyncio.gather(*tasks, return_exceptions=True)
+    # Use per-store scrapers implemented in app.scrapers
+    raw = await search_all(query)
+    # Normalize titles and add normalized_title
+    normalized = normalize_results(raw)
 
+    # Convert normalized items into the old API response shape
     payload: list[dict[str, Any]] = []
-    for store, result in zip(settings.stores, results, strict=False):
-        if isinstance(result, Exception):
-            payload.append(
-                {
-                    "store": store["name"],
-                    "price": None,
-                    "currency": "€",
-                    "confidence": 0.0,
-                    "productUrl": store["search_url"].format(
-                        query=quote_plus(query)
-                    ),
-                    "error": str(result),
-                }
-            )
-        else:
-            payload.append(result)
+    for item in normalized:
+        payload.append(
+            {
+                "store": item.get("store"),
+                "price": item.get("price"),
+                "currency": item.get("currency", "€"),
+                "confidence": 0.8,  # placeholder; per-store scrapers can set this later
+                "originalPrice": None,
+                "discountPercent": None,
+                "productUrl": item.get("url"),
+                "title": item.get("title"),
+                "normalized_title": item.get("normalized_title"),
+            }
+        )
     return payload
 
