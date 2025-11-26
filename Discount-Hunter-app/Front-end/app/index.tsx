@@ -9,13 +9,10 @@ export default function RootScreen() {
 
   useEffect(() => {
     if (!isLoading) {
-      if (isAuthenticated) {
-        router.replace('/home');
-      } else {
-        router.replace('/auth');
-      }
+      // Always redirect to home - authentication is now optional
+      router.replace('/home');
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isLoading]);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
