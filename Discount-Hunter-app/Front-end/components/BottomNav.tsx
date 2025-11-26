@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
-import { Home, Search, Settings, LogOut } from 'lucide-react-native';
+import { Home, Search, Settings, Camera, Heart } from 'lucide-react-native';
 import { palette, tones } from '../constants/colors';
 
 interface BottomNavProps {
-  onLogout?: () => void;
+  onTakePhoto: () => void;
 }
 
-export default function BottomNav({ onLogout }: BottomNavProps) {
+export default function BottomNav({ onTakePhoto }: BottomNavProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -22,8 +22,8 @@ export default function BottomNav({ onLogout }: BottomNavProps) {
       >
         <Home
           size={24}
-          color={isActive('/home') ? palette.primary : tones.neutral400}
-          fill={isActive('/home') ? palette.primary : 'transparent'}
+          color={isActive('/home') ? tones.inverseText : 'rgba(255, 255, 255, 0.6)'}
+          fill={isActive('/home') ? tones.inverseText : 'transparent'}
         />
         <Text style={[styles.navText, isActive('/home') && styles.navTextActive]}>
           Home
@@ -37,10 +37,33 @@ export default function BottomNav({ onLogout }: BottomNavProps) {
       >
         <Search
           size={24}
-          color={isActive('/results') ? palette.primary : tones.neutral400}
+          color={isActive('/results') ? tones.inverseText : 'rgba(255, 255, 255, 0.6)'}
         />
         <Text style={[styles.navText, isActive('/results') && styles.navTextActive]}>
           Search
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.cameraButton}
+        onPress={onTakePhoto}
+        activeOpacity={0.8}
+      >
+        <Camera size={28} color={palette.primary} strokeWidth={2.5} />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.navItem}
+        onPress={() => router.push('/favorites')}
+        activeOpacity={0.7}
+      >
+        <Heart
+          size={24}
+          color={isActive('/favorites') ? tones.inverseText : 'rgba(255, 255, 255, 0.6)'}
+          fill={isActive('/favorites') ? tones.inverseText : 'transparent'}
+        />
+        <Text style={[styles.navText, isActive('/favorites') && styles.navTextActive]}>
+          Favorites
         </Text>
       </TouchableOpacity>
 
@@ -51,23 +74,12 @@ export default function BottomNav({ onLogout }: BottomNavProps) {
       >
         <Settings
           size={24}
-          color={isActive('/settings') ? palette.primary : tones.neutral400}
+          color={isActive('/settings') ? tones.inverseText : 'rgba(255, 255, 255, 0.6)'}
         />
         <Text style={[styles.navText, isActive('/settings') && styles.navTextActive]}>
           Settings
         </Text>
       </TouchableOpacity>
-
-      {onLogout && (
-        <TouchableOpacity
-          style={styles.navItem}
-          onPress={onLogout}
-          activeOpacity={0.7}
-        >
-          <LogOut size={24} color="#e74c3c" />
-          <Text style={[styles.navText, { color: '#e74c3c' }]}>Logout</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 }
@@ -77,16 +89,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: tones.neutral50,
+    backgroundColor: palette.primary,
     paddingVertical: 12,
     paddingBottom: 20,
-    borderTopWidth: 1,
-    borderTopColor: tones.neutral200,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 12,
   },
   navItem: {
     alignItems: 'center',
@@ -94,15 +104,32 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     gap: 4,
+    flex: 1,
+  },
+  cameraButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: tones.inverseText,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -28,
+    shadowColor: palette.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+    borderWidth: 4,
+    borderColor: palette.primary,
   },
   navText: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '500',
-    color: tones.neutral400,
+    color: 'rgba(255, 255, 255, 0.6)',
     marginTop: 2,
   },
   navTextActive: {
-    color: palette.primary,
+    color: tones.inverseText,
     fontWeight: '600',
   },
 });

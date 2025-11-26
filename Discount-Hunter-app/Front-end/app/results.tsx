@@ -35,6 +35,10 @@ const sleep = (ms: number) =>
 
 export default function ResultsScreen() {
   const router = useRouter();
+
+  const handleTakePhoto = () => {
+    router.push('/scanning');
+  };
   const { productName: productNameParam } = useLocalSearchParams<{
     productName?: string | string[];
   }>();
@@ -320,7 +324,7 @@ export default function ResultsScreen() {
         </View>
       </ScrollView>
 
-      <BottomNav />
+      <BottomNav onTakePhoto={handleTakePhoto} />
     </View>
   );
 }
